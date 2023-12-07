@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\ProfileController;
+
+use App\Http\Controllers\User\PostController;
+use App\Http\Controllers\User\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,5 +35,16 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::resource("category", CategoryController::class);
+Route::name("admin.")->prefix("admin")->middleware("auth")->group(function () {
+    Route::resource("category", AdminCategoryController::class);
+
+    Route::resource("posts", AdminPostController::class)->where(["post" => "[0-9]+"]);
+    Route::get("posts/trashed", [AdminPostController::class, "trashed"])->name("posts.trashed");
+    Route::patch("posts/{post}/restore", [AdminPostController::class, "restore"])->name("posts.restore")->where(["post" => "[0-9]+"]);
+    Route::post("ckeditor/upload", [AdminPostController::class, "editor"])->name("ckeditor.upload");
+});
+
+Route::resource("comments", CommentController::class)->middleware("auth")->except(["index", "show", "create"]);
+
+
 Route::resource("posts", PostController::class);

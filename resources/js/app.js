@@ -1,7 +1,8 @@
-import './bootstrap';
+import "./bootstrap";
+// import "./ckeditor/ckeditor";
 
-import Alpine from 'alpinejs';
-
+// ===================== Alpine.js =====================
+import Alpine from "alpinejs";
 window.Alpine = Alpine;
 
 Alpine.start();

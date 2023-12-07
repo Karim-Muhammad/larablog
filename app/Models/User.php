@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        "image",
+        "description",
+        "work_on"
     ];
 
     /**
@@ -31,6 +34,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $attributes = [
+        "image" => "users_imgs/cSQ4OHNSE3JQ1OS2lFSyjlpbFuxuZNGcllt3d02z.png"
     ];
 
     /**
