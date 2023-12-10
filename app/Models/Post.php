@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -49,6 +50,14 @@ class Post extends Model
         return $this->hasMany(Comment::class)->whereNull("parent_id");
     }
 
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function hasTag(string $tagID) {
+        return in_array($tagID, $this->tags->pluck('id')->toArray());
+    }
 
     // protected $guarded = [
     //     "id",

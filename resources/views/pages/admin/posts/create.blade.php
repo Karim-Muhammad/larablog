@@ -38,6 +38,8 @@
 
                     <div class="w-full my-7">
 
+                        {{-- Categories --}}
+
                         <label for="categories_multiple"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an
                             category</label>
@@ -45,6 +47,18 @@
                             class="focus:bg-gray-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+
+                        {{-- Tags --}}
+
+                        <label for="tags_multiple"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an
+                            Tag</label>
+                        <select class="tags" multiple id="tags_multiple" name="tags_id[]"
+                            class="focus:bg-gray-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                             @endforeach
                         </select>
 
@@ -71,7 +85,9 @@
                     <label for="content">Blog's Content</label>
 
                     {{-- CKEditor --}}
-                    <textarea class="invisible hidden" id="body" name="body"></textarea>
+                    <textarea class="invisible hidden" id="body" name="body">
+                        {!! old('body', '') !!}
+                    </textarea>
 
                     <div class="document-editor border-gray-200 border outline-0">
                         <div class="document-editor__toolbar"></div>

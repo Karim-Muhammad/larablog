@@ -40,7 +40,8 @@ class PostController extends Controller
     {
         //
         return view("pages.admin.posts.create", [
-            "categories" => \App\Models\Category::all()
+            "categories" => \App\Models\Category::all(),
+            "tags" => \App\Models\Tag::all(),
         ]);
     }
 
@@ -56,12 +57,15 @@ class PostController extends Controller
 
         // dd($request->image);
 
-        $existingUser->posts()
+        $post = $existingUser->posts()
             ->make([
                 ...$request->validated(),
                 "image" => $request->image,
-            ])
-            ->save();
+            ]);
+
+        $post->save(); // save in posts table
+        $post->tags()->attach($request->tags_id); // save in post_tag table
+        // $post->attach()
 
         return redirect()->route("admin.posts.index");
     }
@@ -85,7 +89,8 @@ class PostController extends Controller
     {
         return view("pages.admin.posts.edit")
             ->with("post", $post)
-            ->with("categories", \App\Models\Category::all());
+            ->with("categories", \App\Models\Category::all())
+            ->with("tags", \App\Models\Tag::all());
     }
 
     /**
@@ -102,7 +107,12 @@ class PostController extends Controller
         }
 
         $post->update($data);
+        // $post->tags()->detach($request->tags_id);
+        // $post->tags()->attach($request->tags_id);
+        $post->tags()->sync($request->tags_id);
+
         return redirect()->route("admin.posts.index");
+
     }
 
     /**

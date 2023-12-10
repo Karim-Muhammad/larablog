@@ -16,6 +16,11 @@ class CheckExistsCategoryMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return Category::all()->count() > 0 ? $next($request) : redirect()->route("admin.category.create");
+        if (Category::all()->count() > 0) {
+            return $next($request);
+        } else {
+            session()->flash("error", "No category in your bag! create one");
+            return redirect()->route("admin.category.create");
+        }
     }
 }

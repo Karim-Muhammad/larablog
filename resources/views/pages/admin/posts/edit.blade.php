@@ -1,4 +1,5 @@
 <x-app-layout>
+    {{-- @dd($post->tags()->pluck('tags.id')) --}}
     {{-- {{ header }} --}}
     <x-slot name="header">
         <b>Edit a Post</b>
@@ -42,8 +43,11 @@
                     <label for="content">Blog's Content</label>
 
                     {{-- CKEditor --}}
-                    <textarea class="invisible hidden" id="body" name="body"></textarea>
+                    <textarea class="invisible hidden" id="body" name="body">
+                        {!! old('body', $post->body) !!}
+                    </textarea>
 
+                    {{-- @dd($post) --}}
                     <div class="document-editor border-gray-200 border outline-0">
                         <div class="document-editor__toolbar"></div>
                         <div class="document-editor__editable-container outline-0">
@@ -67,6 +71,7 @@
 
                 <div class="w-full my-7">
 
+                    {{-- Categries --}}
                     <label for="categories_multiple"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an category</label>
                     <select id="categories_multiple" name="category_id"
@@ -74,6 +79,19 @@
                         @foreach ($categories as $category)
                             <option {{ $post->category_id === $category->id ? 'selected' : '' }}
                                 value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+
+                    {{-- Tags --}}
+                    <label for="tags_multiple"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an category</label>
+                    <select class="tags" multiple id="tags_multiple" name="tags_id[]"
+                        class="focus:bg-gray-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                        @foreach ($tags as $tag)
+                            <option {{ $post->hasTag($tag->id) ? 'selected' : '' }} value="{{ $tag->id }}">
+                                {{ $tag->name }}
+                            </option>
                         @endforeach
                     </select>
 

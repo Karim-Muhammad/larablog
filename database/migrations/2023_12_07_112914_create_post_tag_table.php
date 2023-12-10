@@ -10,10 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->string("description")->nullable();
-            $table->string("work_on")->nullable();
+        Schema::create('post_tag', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId("post_id")->references("id")->on("posts");
+            $table->foreignId("tag_id")->constrained("tags");
+            $table->timestamps();
         });
     }
 
@@ -22,10 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dropColumn("description");
-            $table->dropColumn("work_on");
-        });
+        Schema::dropIfExists('post_tag');
     }
 };
