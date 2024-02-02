@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TagsController;
 
@@ -37,16 +39,21 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::name("admin.")->prefix("admin")->middleware("auth")->group(function () {
-    Route::resource("category", AdminCategoryController::class);
+
+    Route::middleware("admin")->group(function() {
+        Route::resource("category", AdminCategoryController::class);
+    });
+
     Route::resource("tags", TagsController::class);
 
     Route::resource("posts", AdminPostController::class)->where(["post" => "[0-9]+"]);
     Route::get("posts/trashed", [AdminPostController::class, "trashed"])->name("posts.trashed");
     Route::patch("posts/{post}/restore", [AdminPostController::class, "restore"])->name("posts.restore")->where(["post" => "[0-9]+"]);
+
+    Route::resource("users", AdminUserController::class);
+
     Route::post("ckeditor/upload", [AdminPostController::class, "editor"])->name("ckeditor.upload");
-});
+}); 
 
 Route::resource("comments", CommentController::class)->middleware("auth")->except(["index", "show", "create"]);
-
-
 Route::resource("posts", PostController::class);

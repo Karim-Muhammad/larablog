@@ -50,12 +50,12 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
         // dd($request->validated());
         $existingUser = Auth::user();
         $request->image = $request->image->store("posts/images", "public");
 
-        // dd($request->image);
+        // dd($request->image); return File resource object
+        // ->store() will save the file in storage/app/public/posts/images
 
         $post = $existingUser->posts()
             ->make([
@@ -63,9 +63,10 @@ class PostController extends Controller
                 "image" => $request->image,
             ]);
 
-        $post->save(); // save in posts table
-        $post->tags()->attach($request->tags_id); // save in post_tag table
-        // $post->attach()
+        $post->save(); // save in `posts` table
+        $post->tags()->attach($request->tags_id); // save in `post_tag` table
+        // learn more about attach() and detach() https://laravel.com/docs/8.x/eloquent-relationships#updating-many-to-many-relationships
+        // attach, detach, sync, syncWithoutDetaching
 
         return redirect()->route("admin.posts.index");
     }
@@ -100,6 +101,7 @@ class PostController extends Controller
     {
         // dd($request->hasFile("image")); // check if image field has value or not (uploaded or not)
         $data = $request->validated();
+
         if ($request->hasFile("image")) {
             Storage::delete("public/" . $post->image); // DELETE OLD IMAGE
 
@@ -107,9 +109,10 @@ class PostController extends Controller
         }
 
         $post->update($data);
-        // $post->tags()->detach($request->tags_id);
-        // $post->tags()->attach($request->tags_id);
-        $post->tags()->sync($request->tags_id);
+        // $post->tags()->detach($request->tags_id); // remove all tags which are not in $request->tags_id
+        // $post->tags()->attach($request->tags_id); // add all tags which are in $request->tags_id
+        $post->tags()->sync($request->tags_id); // remove all tags which are not in $request->tags_id and add all tags which are in $request->tags_id
+        
 
         return redirect()->route("admin.posts.index");
 

@@ -16,7 +16,7 @@ class TagsController extends Controller
     {
         //
         $tags = Tag::all();
-        return view("pages.admin.tags.index")->with("tags", $tags);
+        return view("pages.admin.tags.index")->with("tags", $tags); // you can access $tags in the view or by session("tags")
     }
 
     /**
@@ -24,7 +24,6 @@ class TagsController extends Controller
      */
     public function create()
     {
-        //
         return view("pages.admin.tags.create");
     }
 
@@ -38,7 +37,7 @@ class TagsController extends Controller
             "name" => "required|unique:tags",
         ]);
 
-        Tag::create($request->all());
+        Tag::create($request->all()); // mass assignment, it will ->all() will get all the data which comes from the form
 
         return redirect()->route("admin.tags.index");
     }
@@ -48,7 +47,6 @@ class TagsController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
         // dd($tag->posts()->create([])->toSql());
 
         return view("pages.admin.tags.show", [
@@ -62,7 +60,6 @@ class TagsController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
         return view('pages.admin.tags.edit')->with("tag", $tag);
     }
 
@@ -71,6 +68,7 @@ class TagsController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
+        // Route Binding exist thanks to Dependency Injection, {tag} in the route is the same as $tag here
 
         $request->validate([
             "name" => "required|unique:tags",

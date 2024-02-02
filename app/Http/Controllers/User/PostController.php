@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\User;
 
+// Controllers
 use App\Http\Controllers\Controller;
+
+// Requests
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+
+// Models
 use App\Models\Post;
+
+// Facades
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+// Plugins
 use Intervention\Image\ImageManager;
 
 class PostController extends Controller
@@ -18,16 +26,18 @@ class PostController extends Controller
     public function __construct()
     {
         // $this->middleware(["m2", "m1", "m2"]); // m2 then m1, and no duplicate
-        $this->middleware(["m1", "m2"]);
-    } /**
+        // $this->middleware(["m1", "m2"]);
+    }
+    
+    /**
       * Display a listing of the resource.
       */
     public function index(Request $request)
     {
-        dd($request->all());
+        // ==================== 1 ====================
         // https://stackoverflow.com/questions/49435261/laravel-find-posts-from-current-user
         // $existingUser = Auth::user();
-        // return view("pages.admin.posts.index")->with("posts", $existingUser->posts);
+        return view("pages.public.posts.index")->with("posts", Post::all());
     }
 
     /**

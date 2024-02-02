@@ -85,3 +85,13 @@
         </div>
     </form>
 </section>
+
+@if($flag === false)
+<script>
+    Array.from(document.forms).forEach((form)=> {
+        form.addEventListener("submit", (e)=> {
+            e.preventDefault();
+        })
+    })
+</script>
+@endif

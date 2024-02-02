@@ -35,24 +35,15 @@
                 </div>
             </header>
         @endif
-
-        {{-- content inside this component! --}}
-        @include('components.side-bar')
-
-        <!-- Page Content -->
-        {{-- <main> {{ $slot }} </main> --}}
     </div>
 
     {{-- ========================================================== --}}
     {{-- ====================   SCRIPTS   ========================= --}}
     {{-- ========================================================== --}}
     <script src="{{ asset('assets/js/flowbite.min.js')}} "></script>
-    {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
     
     {{-- ========================================================== --}}
-    {{-- <script> {!! Vite::content('resources/assets/js/script.js') !!} </script> --}}
     @vite('resources/assets/js/script.js')
-
     @yield('scripts')
 </body>
 

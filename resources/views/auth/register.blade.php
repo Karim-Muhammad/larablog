@@ -48,5 +48,16 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+
+        {{-- Roles --}}
+        <div class="mt-4">
+            <x-input-label for="roles" :value="__('Roles')" />
+            <select name="roles" id="roles" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-gray-600 dark:text-gray-300">
+                @foreach (["admin", "writer", "user"] as $role)
+                    <option value="{{ $role }}">{{ $role }}</option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('roles')" class="mt-2" />
+        </div>
     </form>
 </x-guest-layout>
